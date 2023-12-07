@@ -1,0 +1,16 @@
+{  
+  "name": "getPathData2",  
+  "version": "0.9.0",  
+  "description": "A collection of javaScript helpers for parsing and converting SVG path data from `SVGGeometryElement`s or `d` strings. ",  
+  "main": "getPathData2.js",  
+  "repository": {    
+    "type": "git",    
+    "url": "git+github.com:herrstrietzel/getPathData2.git"  
+  },  
+  "author": "herrstrietzel",  
+  "license": "MIT",  
+  "bugs": {    
+    "url": "https://github.com/herrstrietzel/getPathData2/issues"  
+  },  
+  "homepage": "https://github.com/herrstrietzel/getPathData2#readme"
+}
