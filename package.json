@@ -1,6 +1,6 @@
 {
   "name": "getpathdatatwo",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "description": "A collection of javaScript helpers for parsing and converting SVG path data from `SVGGeometryElement`s or `d` strings. ",
   "main": "getPathData2.js",
   "repository": {
