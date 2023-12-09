@@ -31,7 +31,7 @@ Load getPathData2 locally or via cdn
 ```
 
 ### Parse
-You can retrieve pathData from a `<path>` as well as other SVGGeometryElements such as `<rect>`, `<circle>`, `<ellipse>`, `<line>`, `<polyline>`, `<polygon>`
+You can retrieve pathData from a `<path>` as well as other SVGGeometryElements such as `<rect>`, `<circle>`, `<ellipse>`, `<line>`, `<polyline>`, `<polygon>`. See also section ["Get path data from shapes/primitives"](#user-content-get-path-data-from-shapesprimitives)
 
 
 ```
@@ -129,7 +129,11 @@ This is handy if you intend to minify the final pathdata output after previous m
 
 
 ## Get path data from shapes/primitives
-You can retrieve pathData from any `SVGGeometryElement`
+You can retrieve pathData from any `SVGGeometryElement`. If you need to replace a shape with a `<path>` element you can use the `convertShapeToPath()` method. (See primitives.html)
+
+```
+
+```
 
 
 

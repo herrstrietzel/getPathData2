@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert primitives</title>
+</head>
+
+<body>
+    <h1>Convert primitives</h1>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 30">
+        <g class="gPrimitives">
+            <polygon id="polygon" fill="#CCCCCC" stroke="#E3000F"
+                points="7.9,22.8 3,14.3 7.9,5.8 17.6,5.8 22.5,14.3 17.6,22.8 " />
+            <polyline id="polyline" fill="none" stroke="#E3000F"
+                points="40.9,22.8 31.1,22.8 26.2,14.3 31.1,5.8 40.9,5.8 45.8,14.3 " />
+            <rect id="rect" x="37.5%" y="20%" rx="2%" ry="5%" fill="none" stroke="#E3000F" width="6%" height="56%" />
+            <line id="line" fill="none" stroke="#E3000F" x1="50.5" y1="22.8" x2="52.5" y2="5.8" />
+            <circle id="circle" fill="none" stroke="#E3000F" cx="52%" cy="49%" r="8%" />
+            <ellipse id="ellipse" fill="none" stroke="#E3000F" cx="68%" cy="49%" rx="7%" ry="25%" />
+            <path id="piechart" transform="scale(0.9) translate(130, 6)" d="M 10 0 A 10 10 0 1 1 1.34 15 L 10 10 z"
+                fill="red" class="segment segment-1 segment-class" id="segment-01" />
+        </g>
+    </svg>
+
+    <script src="../getPathData2.js"></script>
+
+    <script>
+        let shapes = document.querySelectorAll('rect, circle, ellipse, polygon, polyline, line')
+
+        // parse pathData
+        let options = {
+            toRelative: true,
+            toShorthands: true,
+            arcToCubic: true,
+            decimals: 1,
+            minify: true
+        }
+
+        shapes.forEach(shape=>{
+            shape = shape.convertShapeToPath(options)
+            shape.setAttribute('stroke', 'blue')
+        })
+
+    </script>
+</body>
+
+</html>

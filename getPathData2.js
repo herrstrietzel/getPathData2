@@ -192,7 +192,7 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
     }
 
     if (toShorthands) {
-        pathData = pathDataToShorthandshands(pathData, decimals)
+        pathData = pathDataToShorthands(pathData, decimals)
     }
     else if (toLonghands) {
         pathData = pathDataToLonghands(pathData, decimals)
@@ -214,7 +214,7 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
  * retrieve patData from primitives:
  * <circle>, <ellipse>, <rect>, <polygon>, <polyline>, <line>, 
  */
-SVGGeometryElement.prototype.convertPrimitiveToPath = function (options) {
+SVGGeometryElement.prototype.convertShapeToPath = function (options) {
     let pathData = this.getPathData2(options);
 
     // create path element
@@ -243,7 +243,7 @@ SVGGeometryElement.prototype.convertPrimitiveToPath = function (options) {
     let exclude = ["x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "points", "width", "height"];
     // copy attributes to path and set pathData
     setAttributes(path, attributes, exclude);
-    path.setPathData2(pathData);
+    path.setPathData2(pathData, options);
     this.replaceWith(path);
     return path;
 }
