@@ -12,7 +12,6 @@
 * https://github.com/jarek-foksa/path-data-polyfill
 */
 
-
 /**
 * custom pathData() and setPathData() methods
 **/
