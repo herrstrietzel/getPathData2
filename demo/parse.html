@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>parse path</title>
+    <title>Parse path</title>
 </head>
 
 <body>
@@ -34,6 +34,16 @@
 
         // set parseData
         path2.setPathData2(pathData)
+
+
+
+        let d = ` m 50 0 .00001.0001.001 10e-10 Q 36.4 0 24.8 6.8 t -18 18         
+                      t -6.8 25.2 C 0 63.8 5.6 76.3 14.65 85.35 s 21.55 14.65 35.35 14.65 A 50 25 -45 0 1 100 40 h -20-.5 v -12.5-12.5 H 75 50V 0z`;
+
+        let pathDataD = parseDtoPathData(d)
+        console.log(pathDataD);
+
+
     </script>
 </body>
 
