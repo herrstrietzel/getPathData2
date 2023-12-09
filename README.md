@@ -18,3 +18,4 @@ This repository aims at providing helpers to:
 * round path data coordinates
 * convert commands to shorthands if applicable
 * convert primitives like `<circle>`, `<rect>`, `<polyline>` to `<path>` elements
+
