@@ -1,5 +1,5 @@
 /** 
-* getPathData2 v 0.9.4
+* getPathData2 v 0.9.5
 * Convert svg paths from 
 * - d attribute strings
 * - path or geometry elements (e.g. circle, rect, ellipse etc.) 
@@ -188,7 +188,6 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
         }
     }
 
-
     if (quadraticToCubic || arcToCubic) {
         pathData = normalizePathData(pathData, options)
     }
@@ -293,21 +292,25 @@ function parseDtoPathData(d) {
          */
         if (typeRel === "a") {
             if (com.length < comLengths[typeRel]) {
-                let lastFlag = com[3];
-                if (lastFlag.length > 1) {
-                    let flagArr = lastFlag.split("");
-                    com = [
-                        com[0],
-                        com[1],
-                        com[2],
-                        +flagArr[0],
-                        +flagArr[1],
-                        com[4],
-                        com[5]
-                    ];
-                }
+              let flags = com[3].substring(0, 2).split('')
+              let largeArc = +flags[0];
+              let sweep = +flags[1];
+              let onPathX = +com[4]
+              if(com[3].length>2){
+                 onPathX = +com[3].substring(2)
+              }
+              
+              com = [
+                com[0],
+                com[1],
+                com[2],
+                largeArc,
+                sweep,
+                onPathX,
+                com[com.length - 1]
+              ];
             }
-        }
+          }
 
         // convert to numbers
         let values = com.map((val) => {
