@@ -192,7 +192,7 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
     }
 
     if (toShorthands) {
-        pathData = pathDatatoShorthandshands(pathData, decimals)
+        pathData = pathDataToShorthandshands(pathData, decimals)
     }
     else if (toLonghands) {
         pathData = pathDataToLonghands(pathData, decimals)
@@ -363,12 +363,13 @@ function parseDtoPathData(d) {
  */
 
 function normalizePathData(pathData, options) {
+
     // add M
     let pathDataAbs = [pathData[0]];
-    let offX = 0;
-    let offY = 0;
     let lastX = pathData[0].values[0];
     let lastY = pathData[0].values[1];
+    let offX = lastX;
+    let offY = lastY;
 
 
     // merge default options
@@ -874,7 +875,7 @@ function pathDataToAbsolute(pathData, decimals = -1) {
 /**
  * decompose/convert shorthands to "longhand" commands:
  * H, V, S, T => L, L, C, Q
- * reversed method: pathDatatoShorthandshands()
+ * reversed method: pathDataToShorthands()
  */
 
 function pathDataToLonghands(pathData, decimals = -1) {
@@ -968,7 +969,7 @@ function pathDataToLonghands(pathData, decimals = -1) {
  * L, L, C, Q => H, V, S, T
  * reversed method: pathDataToLonghands()
  */
-function pathDatatoShorthands(pathData, decimals = -1) {
+function pathDataToShorthands(pathData, decimals = -1) {
     pathData = pathDataToAbsolute(pathData, decimals);
     let comShort = {
         type: "M",
