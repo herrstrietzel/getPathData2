@@ -1,14 +1,15 @@
 /** 
+* getPathData2 v 0.9.4
 * Convert svg paths from 
 * - d attribute strings
-* - path or geometry elements (e.g. circle, rect, ellipse etc.) via getPathData2 method
+* - path or geometry elements (e.g. circle, rect, ellipse etc.) 
+* via getPathData2() method
 * 
 * Based on the svg working draft 
 * https://svgwg.org/specs/paths/#InterfaceSVGPathData
 * 
-* customized parser - inspired by Jarek Foksa's polyfill
+* Heavily inspired by Jarek Foksa's polyfill
 * https://github.com/jarek-foksa/path-data-polyfill
-* test 123
 */
 
 
