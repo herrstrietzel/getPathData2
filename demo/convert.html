@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert path</title>
+</head>
+
+<body>
+    <h1>Parse pathData</h1>
+    <svg id="svgPrev" viewBox="0 0 100 100" overflow="visible">
+        <path id="path" d="
+                      m 50 0 .00001.0001.001 10e-10         
+                      Q 36.4 0 24.8 6.8        
+                      t -18 18         
+                      t -6.8 25.2         
+                      C 0 63.8 5.6 76.3 14.65 85.35         
+                      s 21.55 14.65 35.35 14.65         
+                      A 50 25 -45 0 1 100 40         
+                      h -20-.5         
+                      v -12.5-12.5         
+                      H 75 50         
+                      V 0        
+                      z " />
+                      <path id="path2" stroke="red" fill="none" stroke-width="0.5" />
+                      <path id="path3" stroke="green" fill="none" stroke-width="0.25" />
+                    </svg>
+
+    <script src="../getPathData2.js"></script>
+    <!-- 
+
+        <script src="https://cdn.jsdelivr.net/gh/herrstrietzel/svgHelpers@main/js/pathData.getPathDataCustom.js"></script>
+    -->
+
+
+    <script>
+
+
+
+
+        // parse pathData
+        let options = {
+            toAbsolute: true,
+            toLonghands: true
+        }
+        let pathData = path.getPathData2(options); 
+        //console.log(pathData)
+
+        // set parseData
+        path2.setPathData2(pathData)
+
+
+        let d = ` m 50 0 .00001.0001.001 10e-10 Q 36.4 0 24.8 6.8 t -18 18         
+                      t -6.8 25.2 C 0 63.8 5.6 76.3 14.65 85.35 s 21.55 14.65 35.35 14.65 A 50 25 -45 0 1 100 40 h -20-.5 v -12.5-12.5 H 75 50V 0z`;
+
+        let decimals = 1
+
+        let pathDataD = parseDtoPathData(d)
+        // to absolute
+        pathDataD = pathDataToAbsolute(pathDataD, decimals)
+
+        // to relative
+        pathDataD = pathDataToRelative(pathDataD, decimals)
+
+        // to longhands
+        pathDataD = pathDataToLonghands(pathDataD, decimals)
+
+        // to shorthands
+        pathDataD = pathDataToShorthands(pathDataD, decimals)
+
+        // pathData to D string
+        d=pathDataToD(pathDataD, decimals, true);
+        path3.setAttribute('d', d)
+
+        console.log(pathDataD);
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
