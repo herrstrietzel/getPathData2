@@ -1,5 +1,5 @@
 /** 
-* getPathData2 v 0.9.5
+* getPathData2 v 0.9.6
 * Convert svg paths from 
 * - d attribute strings
 * - path or geometry elements (e.g. circle, rect, ellipse etc.) 
@@ -331,7 +331,7 @@ function parseDtoPathData(d) {
 
         // has implicit commands
         if (values.length > chunkSize) {
-            let typeImplicit = type === "M" ? (isRel ? "l" : "L") : type;
+            let typeImplicit = typeRel === "m" ? (isRel ? "l" : "L") : type;
             for (let i = chunkSize; i < values.length; i += chunkSize) {
                 let chunk = values.slice(i, i + chunkSize);
                 pathData.push({ type: typeImplicit, values: chunk });
