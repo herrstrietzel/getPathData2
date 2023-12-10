@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minify svg pathdata</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 20em;
+            max-height: 100%;
+            border-radius: 0.5em;
+            border-color: transparent;
+            white-space: pre-wrap;
+        }
+
+        input[type="number"] {
+            width: 4em;
+            transform: translateY(-0.1em);
+            border-radius: 0.333em;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button {
+            opacity: 1;
+        }
+
+        svg {
+            display: block;
+            height: 100%;
+            width: auto;
+            border: 1px dotted #ccc;
+            margin: 0 auto;
+        }
+
+        .grd {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1em;
+        }
+
+        @media (min-width:1000px) {
+            .grd {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        textarea {
+            flex: 1;
+            background-color: #777;
+            color: #fff
+        }
+
+
+        fieldset {
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column
+        }
+
+        legend {
+            font-weight: 700;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <h1>SVG optimizer</h1>
+    <p>Paste a svg oth a path d string</p>
+
+    <div class="grd">
+
+        <fieldset>
+            <legend>Input</legend>
+            <p>
+                <label>
+                    <input class="inputs" name="inputRelativeAbsolute" type="radio" value="absolute"> All Absolute
+                </label>
+                <label><input class="inputs" name="inputRelativeAbsolute" type="radio" value="relative" checked> All
+                    Relative</label>
+                <label><input class="inputs" name="inputRelativeAbsolute" type="radio" value="unchanged">
+                    Unchanged</label>
+            </p>
+
+            <p>
+
+                <label>
+                    <input class="inputs" name="inputToShorthands" type="radio" value="shorthands" checked> Apply
+                    shorthands
+                </label>
+                <label><input class="inputs" name="inputToShorthands" type="radio" value="longhands"> All
+                    longhands</label>
+                <label><input class="inputs" name="inputToShorthands" type="radio" value="unchanged">
+                    Unchanged</label>
+            </p>
+
+            <p>
+                <label><input class="inputs" id="inputPrecision" type="number" value="2" min="-1"> Precision</label>
+                <label><input class="inputs" id="inputScale" type="number" value="1" min="0.01" step="0.1"> Scale</label>
+            </p>
+            <p>
+                <label><input class="inputs" id="inputMinify" type="checkbox" checked> Minify</label>
+                <label><input class="inputs" id="inputPrettify" type="checkbox" checked> Prettify</label>
+                <label><input class="inputs" id="inputCrop" type="checkbox"> Crop and center</label>
+            </p>
+
+            <textarea class="inputs" id="svgInput">
+
+
+                M328.4 393.5C318.7 402.6 303.5 402.1 294.5 392.4C287.1 384.5 274.4 376 256 376C237.6 376 224.9 384.5 217.5 392.4C208.5 402.1 193.3 402.6 183.6 393.5C173.9 384.5 173.4 369.3 182.5 359.6C196.7 344.3 221.4 328 256 328C290.6 328 315.3 344.3 329.5 359.6C338.6 369.3 338.1 384.5 328.4 393.5zM144.4 240C144.4 231.2 147.9 223.2 153.7 217.4L122.9 207.2C114.6 204.4 110 195.3 112.8 186.9C115.6 178.6 124.7 174 133.1 176.8L229.1 208.8C237.4 211.6 241.1 220.7 239.2 229.1C236.4 237.4 227.3 241.1 218.9 239.2L208.1 235.6C208.3 237 208.4 238.5 208.4 240C208.4 257.7 194 272 176.4 272C158.7 272 144.4 257.7 144.4 240V240zM368.4 240C368.4 257.7 354 272 336.4 272C318.7 272 304.4 257.7 304.4 240C304.4 238.4 304.5 236.8 304.7 235.3L293.1 239.2C284.7 241.1 275.6 237.4 272.8 229.1C270 220.7 274.6 211.6 282.9 208.8L378.9 176.8C387.3 174 396.4 178.6 399.2 186.9C401.1 195.3 397.4 204.4 389.1 207.2L358.9 217.2C364.7 223 368.4 231.1 368.4 240H368.4zM0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464z
+
+
+    </textarea>
+
+            <!-- 
+
+                M19.14,12.94c0.04,-0.3 0.06,-0.61 0.06,-0.94c0,-0.32 -0.02,-0.64 -0.07,-0.94l2.03,-1.58c0.18,-0.14 0.23,-0.41 0.12,-0.61l-1.92,-3.32c-0.12,-0.22 -0.37,-0.29 -0.59,-0.22l-2.39,0.96c-0.5,-0.38 -1.03,-0.7 -1.62,-0.94L14.4,2.81c-0.04,-0.24 -0.24,-0.41 -0.48,-0.41h-3.84c-0.24,0 -0.43,0.17 -0.47,0.41L9.25,5.35C8.66,5.59 8.12,5.92 7.63,6.29L5.24,5.33c-0.22,-0.08 -0.47,0 -0.59,0.22L2.74,8.87C2.62,9.08 2.66,9.34 2.86,9.48l2.03,1.58C4.84,11.36 4.8,11.69 4.8,12s0.02,0.64 0.07,0.94l-2.03,1.58c-0.18,0.14 -0.23,0.41 -0.12,0.61l1.92,3.32c0.12,0.22 0.37,0.29 0.59,0.22l2.39,-0.96c0.5,0.38 1.03,0.7 1.62,0.94l0.36,2.54c0.05,0.24 0.24,0.41 0.48,0.41h3.84c0.24,0 0.44,-0.17 0.47,-0.41l0.36,-2.54c0.59,-0.24 1.13,-0.56 1.62,-0.94l2.39,0.96c0.22,0.08 0.47,0 0.59,-0.22l1.92,-3.32c0.12,-0.22 0.07,-0.47 -0.12,-0.61L19.14,12.94zM12,15.6c-1.98,0 -3.6,-1.62 -3.6,-3.6s1.62,-3.6 3.6,-3.6s3.6,1.62 3.6,3.6S13.98,15.6 12,15.6z
+
+
+<svg id="svgPrev" viewBox="0 0 100 100" overflow="visible">
+<path id="path" d="
+        m 50 0 .00001.0001.001 10e-10         
+        Q 36.4 0 24.8 6.8        
+        t -18 18         
+        t -6.8 25.2         
+        C 0 63.8 5.6 76.3 14.65 85.35         
+        s 21.55 14.65 35.35 14.65         
+        A 50 25 -45 0 1 100 40         
+        h -20-.5         
+        v -12.5-12.5         
+        H 75 50         
+        V 0        
+        z " />
+</svg>
+
+    -->
+        </fieldset>
+
+        <fieldset>
+            <legend>Output</legend>
+            <p><a class="btn-default btn-ddownload" id="btnDownload" download="scaled.svg" href="">Download svg (<span
+                        id="spanFilesize"></span>)</a></p>
+            <textarea id="output"></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Preview</legend>
+            <div id="preview"></div>
+        </fieldset>
+
+    </div>
+
+    <!-- 
+            <script src="https://unpkg.com/getpathdatatwo@latest/getPathData2.js"></script>
+
+    -->
+    <script src="../getPathData2.js"></script>
+
+
+    <script>
+
+        window.addEventListener('DOMContentLoaded', (e) => {
+
+
+            let inputs = document.querySelectorAll(".inputs");
+            inputs.forEach((inp) => {
+                inp.addEventListener("input", (e) => {
+
+
+                    let toAbsolute = document.querySelector('input[name="inputRelativeAbsolute"]:checked').value
+                    let toShorthands = document.querySelector('input[name="inputToShorthands"]:checked').value
+                    let decimals = +inputPrecision.value
+                    let cropAndCenter = inputCrop.checked;
+                    let scale = +inputScale.value
+                    let minify = inputMinify.checked;
+
+                    let markup = svgInput.value;
+                    let svg;
+                    let singlePath = false;
+
+                    // if is svg or just element or d
+                    if (!markup.includes("<svg")) {
+                        let ns = 'http://www.w3.org/2000/svg'
+                        svg = document.createElementNS(ns, "svg");
+                        if (!/<[a-z][\s\S]*>/i.test(markup)) {
+                            singlePath = true;
+                            path = document.createElementNS(ns, "path");
+                            path.setAttribute("d", markup);
+                            svg.append(path);
+                        }
+                    }
+                    // parse complete svg
+                    else {
+                        svg = new DOMParser()
+                            .parseFromString(markup, "text/html")
+                            .querySelector("svg");
+                    }
+                    // reset preview
+                    preview.innerHTML = "";
+                    if (svg) {
+                        preview.appendChild(svg);
+
+                        // set auto viewBox
+                        if (singlePath) {
+                            let { x, y, width, height } = svg.getBBox()
+                            svg.setAttribute('viewBox', [x, y, width, height].join(' '))
+                        }
+                    }
+
+                    /**
+                     * process paths
+                     */
+                    let paths = svg.querySelectorAll('path')
+                    paths.forEach(path => {
+                        // parse path
+                        let pathData = path.getPathData2()
+
+                        //scale
+                        if(scale!==1){
+                            pathData = scalePathData(pathData, scale, scale)
+                        }
+
+                        // crop and center
+                        if (singlePath && cropAndCenter) {
+                            let { x, y, width, height } = svg.viewBox.baseVal
+                            let bb = svg.getBBox();
+                            width = +width.toFixed(decimals)*scale
+                            height = +height.toFixed(decimals)*scale
+
+                            console.log(width, height, scale);
+
+                            // adjust viewBox
+                            svg.setAttribute('viewBox', [0, 0, width, height].join(' '))
+
+                            //convert to Relative to shift starting point
+                            pathData = pathDataToRelative(pathData, decimals);
+                            let xN = pathData[0].values[0] - bb.x*scale;
+                            let yN = pathData[0].values[1] - bb.y*scale;
+                            let offsetX = (width - bb.width*scale) / 2;
+                            let offsetY = (height - bb.height*scale) / 2;
+                            pathData[0].values = [xN + offsetX, yN + offsetY]
+                        }
+
+
+                        // set optimized path
+                        let options = {
+                            toRelative: toAbsolute === 'relative' ? true : false,
+                            toAbsolute: toAbsolute === 'absolute' ? true : false,
+                            toShorthands: toShorthands === 'shorthands' ? true : false,
+                            toLonghands: toShorthands === 'longhands' ? true : false,
+                            decimals: decimals,
+                            minify: minify,
+                        }
+                        path.setPathData2(pathData, options)
+
+                        // prettify
+                        if (inputPrettify.checked) {
+                            let d = path.getAttribute('d').replace(/([mlcsqtahvz])([\s\s]*)/gi, "\n$1 $2").
+                                replace(/(\d+)(\-)/g, "$1 $2").
+                                replace(/(\.)(?=(\d+\.\d+)+)(\d+)/g, "$1$3 ").
+                                replace(/\s{2,}/g, ' ').
+                                replace(/([mlcsqtahvz])([\s\s]*)([mlcsqtahvz])/gi, "$1\n$3").
+                                trim();
+
+                            path.setAttribute('d', d)
+                        }
+
+                    })
+
+
+                    /**
+                     * return output
+                     */
+                    let markupNew
+                    if (singlePath) {
+                        markupNew = svg.querySelector('path').getAttribute('d');
+                    } else {
+                        markupNew = new XMLSerializer().serializeToString(svg);
+                    }
+                    output.value = markupNew.replaceAll('&#10;', '\n');
+
+
+                    // original size
+                    let fileSizeOriginal = +(  new Blob([svgInput.value]).size/1024   ).toFixed(3)
+
+                    let blob = new Blob([markupNew]);
+                    btnDownload.href = URL.createObjectURL(blob);
+                    let fileSizeNew = +(blob.size / 1024).toFixed(3);
+                    spanFilesize.textContent = fileSizeNew + " KB" + ' – '  +' saved: '+ (fileSizeOriginal-fileSizeNew).toFixed(3) +'/'+ fileSizeOriginal+' KB';
+
+                })
+            })
+
+            svgInput.dispatchEvent(new Event('input'))
+
+        });
+
+
+        /**
+         * scale pathData
+         */
+        function scalePathData(pathData, scaleX, scaleY) {
+            pathData.forEach((com, i) => {
+                let { type, values } = com;
+                let typeRel = type.toLowerCase();
+
+                switch (typeRel) {
+                    case "a":
+                        com.values = [
+                            values[0] * scaleX,
+                            values[1] * scaleY,
+                            values[2],
+                            values[3],
+                            values[4],
+                            values[5] * scaleX,
+                            values[6] * scaleY
+                        ];
+                        break;
+
+                    case "h":
+                        com.values = [values[0] * scaleX];
+                        break;
+
+                    case "v":
+                        com.values = [values[0] * scaleY];
+                        break;
+
+                    default:
+                        if (values.length) {
+                            for (let i = 0; i < values.length; i += 2) {
+                                com.values[i] *= scaleX;
+                                com.values[i + 1] *= scaleY;
+                            }
+                        }
+                }
+            });
+            return pathData;
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>

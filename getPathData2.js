@@ -1,5 +1,5 @@
 /** 
-* getPathData2 v 0.9.6
+* getPathData2 v 0.9.7
 * Convert svg paths from 
 * - d attribute strings
 * - path or geometry elements (e.g. circle, rect, ellipse etc.) 
@@ -169,11 +169,14 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
     }
 
 
-    let lastCom = pathData[pathData.length - 1];
-    let secondLast = pathData[pathData.length - 2];
-    let secondLastValues = secondLast.values
+
 
     if (cleanClosePath && lastCom.type.toLowerCase() === 'z') {
+
+        let lastCom = pathData[pathData.length - 1];
+        let secondLast = pathData[pathData.length - 2];
+        let secondLastValues = secondLast.values
+    
 
         //let lastCurve
         if (secondLast.type === 'L' && secondLast.values.join(',') === pathData[0].values.join(',')) {
@@ -1133,17 +1136,19 @@ function pathDataToD(pathData, decimals = -1, minify = false) {
         d += `${type}${com.values.join(" ")}`;
     }
 
-    // optimize whitespace
-    d = minify
-        ? d
-            .replaceAll(" 0.", " .")
-            .replaceAll(" -", "-")
-            .replaceAll("-0.", "-.")
-            .replace(/\s+([A-Za-z])/g, "$1")
-            .replaceAll("Z", "z")
-        : d;
+    
+    if(minify){
+        d = d
+        .replaceAll(" 0.", " .")
+        .replaceAll(" -", "-")
+        .replaceAll("-0.", "-.")
+        .replace(/\s+([mlcsqtahvz])/gi, "$1")
+        .replaceAll("Z", "z");
+    }
+
     return d;
 }
+
 
 /**
  * round pathData
