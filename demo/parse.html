@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parse path</title>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
@@ -23,7 +25,8 @@
                       H 75 50         
                       V 0        
                       z " />
-        <path id="path2" stroke="red" fill="none" stroke-width="0.25" />
+        <path id="path2" stroke="red" fill="none" stroke-width="0.5" />
+        <path id="path3" stroke="green" fill="none" stroke-width="0.25" />
     </svg>
 
     <script src="../getPathData2.js"></script>
@@ -36,13 +39,22 @@
         path2.setPathData2(pathData)
 
 
-
         let d = ` m 50 0 .00001.0001.001 10e-10 Q 36.4 0 24.8 6.8 t -18 18         
                       t -6.8 25.2 C 0 63.8 5.6 76.3 14.65 85.35 s 21.55 14.65 35.35 14.65 A 50 25 -45 0 1 100 40 h -20-.5 v -12.5-12.5 H 75 50V 0z`;
 
         let pathDataD = parseDtoPathData(d)
         console.log(pathDataD);
 
+
+        let options = {
+            toRelative: true,
+            toShorthands: true,
+            decimals: 1
+        }
+
+        // get optimized d
+        let pathDataOpt = parseDtoPathDataOpt(d, options);
+        path3.setAttribute('d', pathDataToD(pathDataOpt, 1, true))
 
     </script>
 </body>

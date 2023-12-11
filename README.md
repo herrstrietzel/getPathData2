@@ -19,6 +19,7 @@ This repository aims at providing helpers to:
 * convert commands to shorthands if applicable
 * convert primitives like `<circle>`, `<rect>`, `<polyline>` to `<path>` elements
 
+
 ## Usage
 Load getPathData2 locally or via cdn
 
@@ -63,18 +64,22 @@ This will apply the following conversions
 You can define more finegrained conversions by these parameters
 
 | Parameter | Values/defaults | Effect | 
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | toAbsolute | Boolean; false | all commands to absolute |
 | toRelative | Boolean; false | all commands to relative |
 | arcToCubic | Boolean; false | all arcs to cubic |
 | arcAccuracy | Number; 1 | add segments for better cubic approximation |
 | quadraticToCubic | Boolean; false | quadratic commands to cubic |
 | toLonghands | Boolean; false | shorthands to longhands |
+| toShorthands | Boolean; false | apply shorthands if applicable |
 | normalize  | Boolean; false | shorthand for: toAbsolute, arcToCubic, quadraticToCubic, toLonghands |
 
-#### Example1: simple normalization
-Quite often you need to all absolute values as well as longhand commands. By specifying only required conversions you retain more of the original path information than using the "brute-force" normalize option.  
-Skipping the rather expensive arctocubic conversion also improves performance. 
+#### Example1: simple conversion 
+Quite often you only need to convert commands to all absolute values as well as shorthands to longhand commands to get **calculatable values**. By specifying only required conversions you retain more of the original path information than using the "brute-force" normalize option.  
+
+For instance the suggested `normalize:true` option is quite "aggressive" as it also converts quadratics to cubics. Quadratic béziers usually often more efficient/faster calculations (e.g. calculating points at `t`).  
+
+Besides, skipping the rather complex arctocubic conversion can also improve performance. 
 (See examples/convert.html)
 
 ```
@@ -116,7 +121,7 @@ This is handy if you intend to minify the final pathdata output after previous m
 
 
 | Parameter | Values/defaults | Effect | 
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | toAbsolute | Boolean; false | all commands to absolute |
 | toRelative | Boolean; false | all commands to relative |
 | arcToCubic | Boolean; false | all arcs to cubic |

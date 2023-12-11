@@ -50,7 +50,7 @@ SVGGeometryElement.prototype.getPathData2 = function (options = {}) {
                 if (ry > height / 2) {
                     ry = height / 2;
                 }
-    
+
                 pathData = [
                     { type: "M", values: [x + rx, y] },
                     { type: "H", values: [x + width - rx] },
@@ -125,7 +125,7 @@ SVGGeometryElement.prototype.getPathData2 = function (options = {}) {
     }
 
     if (Object.keys(options).length) {
-        pathData = normalizePathData(pathData, options)
+        pathData = convertPathData(pathData, options)
     }
 
     return pathData;
@@ -168,15 +168,10 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
             cleanClosePath = true
     }
 
-
-
-
     if (cleanClosePath && lastCom.type.toLowerCase() === 'z') {
 
-        let lastCom = pathData[pathData.length - 1];
         let secondLast = pathData[pathData.length - 2];
         let secondLastValues = secondLast.values
-    
 
         //let lastCurve
         if (secondLast.type === 'L' && secondLast.values.join(',') === pathData[0].values.join(',')) {
@@ -191,7 +186,7 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
     }
 
     if (quadraticToCubic || arcToCubic) {
-        pathData = normalizePathData(pathData, options)
+        pathData = convertPathData(pathData, options)
     }
 
     if (toShorthands) {
@@ -244,6 +239,7 @@ SVGGeometryElement.prototype.convertShapeToPath = function (options) {
 
     //exclude attributes not needed for paths
     let exclude = ["x", "y", "x1", "y1", "x2", "y2", "cx", "cy", "r", "rx", "ry", "points", "width", "height"];
+
     // copy attributes to path and set pathData
     setAttributes(path, attributes, exclude);
     path.setPathData2(pathData, options);
@@ -251,8 +247,23 @@ SVGGeometryElement.prototype.convertShapeToPath = function (options) {
     return path;
 }
 
+
+/**
+ * parse d to an optimized pathData array
+ * a shorthand wrapper function to retrieve optimized data
+ * uses the same options as setPathData2() method
+ */
+
+function parseDtoPathDataOpt(d, options = {}) {
+    let pathData = parseDtoPathData(d);
+    pathData = convertPathData(pathData, options)
+    return pathData;
+}
+
+
 /**
  * parse pathData from d attribute
+ * the core function to parse the pathData array from a d string
  **/
 function parseDtoPathData(d) {
     let dClean = d
@@ -294,25 +305,25 @@ function parseDtoPathData(d) {
          */
         if (typeRel === "a") {
             if (com.length < comLengths[typeRel]) {
-              let flags = com[3].substring(0, 2).split('')
-              let largeArc = +flags[0];
-              let sweep = +flags[1];
-              let onPathX = +com[4]
-              if(com[3].length>2){
-                 onPathX = +com[3].substring(2)
-              }
-              
-              com = [
-                com[0],
-                com[1],
-                com[2],
-                largeArc,
-                sweep,
-                onPathX,
-                com[com.length - 1]
-              ];
+                let flags = com[3].substring(0, 2).split('')
+                let largeArc = +flags[0];
+                let sweep = +flags[1];
+                let onPathX = +com[4]
+                if (com[3].length > 2) {
+                    onPathX = +com[3].substring(2)
+                }
+
+                com = [
+                    com[0],
+                    com[1],
+                    com[2],
+                    largeArc,
+                    sweep,
+                    onPathX,
+                    com[com.length - 1]
+                ];
             }
-          }
+        }
 
         // convert to numbers
         let values = com.map((val) => {
@@ -365,15 +376,14 @@ function parseDtoPathData(d) {
  * optional: convert shorthands; arcs to cubics 
  */
 
-function normalizePathData(pathData, options) {
+function convertPathData(pathData, options) {
 
-    // add M
-    let pathDataAbs = [pathData[0]];
-    let lastX = pathData[0].values[0];
-    let lastY = pathData[0].values[1];
-    let offX = lastX;
-    let offY = lastY;
-
+    // analyze pathdata
+    let commandTokens = pathData.map(com => { return com.type }).join('')
+    let hasRel = /[astvqmhlc]/g.test(commandTokens);
+    let hasShorthands = /[hstv]/gi.test(commandTokens);
+    let hasQuadratics = /[qt]/gi.test(commandTokens);
+    let hasArcs = /[a]/gi.test(commandTokens);
 
     // merge default options
     let defaults = {
@@ -381,6 +391,7 @@ function normalizePathData(pathData, options) {
         toRelative: false,
         quadraticToCubic: false,
         toLonghands: true,
+        toShorthands: false,
         arcToCubic: false,
         arcAccuracy: 1,
         decimals: -1,
@@ -391,7 +402,24 @@ function normalizePathData(pathData, options) {
         ...options
     }
 
-    let { toAbsolute, toRelative, quadraticToCubic, toLonghands, arcToCubic, arcAccuracy, decimals } = options;
+    let { toAbsolute, toRelative, quadraticToCubic, toLonghands, toShorthands, arcToCubic, arcAccuracy, decimals } = options;
+
+    // nothing to convert – passthrough
+    if (!hasRel && !hasShorthands && !hasQuadratics && !hasArcs && !toRelative && !toShorthands) {
+        return pathData
+    }
+
+    /**
+     * convert to absolute
+     */
+
+    // add M
+    let pathDataAbs = [pathData[0]];
+    let lastX = pathData[0].values[0];
+    let lastY = pathData[0].values[1];
+    let offX = lastX;
+    let offY = lastY;
+
 
     /**
      * arcToCubic, quadraticToCubic, toLonghands  
@@ -401,18 +429,6 @@ function normalizePathData(pathData, options) {
     if (arcToCubic || toLonghands || quadraticToCubic) {
         toAbsolute = true
     }
-
-    let commandTokens = pathData.map(com => { return com.type }).join('')
-    let hasRel = /[astvqmhlc]/g.test(commandTokens);
-    let hasShorthands = /[hstv]/gi.test(commandTokens);
-    let hasQuadratics = /[qt]/gi.test(commandTokens);
-    let hasArcs = /[a]/gi.test(commandTokens);
-
-    if (!hasRel && !hasShorthands && !hasQuadratics && !hasArcs && !toRelative) {
-        //console.log('nothing to normalize');
-        return pathData
-    }
-
 
     for (let i = 1; i < pathData.length; i++) {
         let com = pathData[i];
@@ -504,7 +520,7 @@ function normalizePathData(pathData, options) {
             }
         }
 
-        // conver quadratic to cubic
+        // convert quadratic to cubic
         if (quadraticToCubic && hasQuadratics && com.type === 'Q') {
             com = quadratic2Cubic(p0, com.values)
         }
@@ -529,6 +545,11 @@ function normalizePathData(pathData, options) {
         offY = lastY;
     };
 
+
+    // to shorthands
+    if (toShorthands) {
+        pathDataAbs = pathDataToShorthands(pathDataAbs, decimals)
+    }
 
     // to Relative
     if (toRelative) {
@@ -1136,14 +1157,14 @@ function pathDataToD(pathData, decimals = -1, minify = false) {
         d += `${type}${com.values.join(" ")}`;
     }
 
-    
-    if(minify){
+
+    if (minify) {
         d = d
-        .replaceAll(" 0.", " .")
-        .replaceAll(" -", "-")
-        .replaceAll("-0.", "-.")
-        .replace(/\s+([mlcsqtahvz])/gi, "$1")
-        .replaceAll("Z", "z");
+            .replaceAll(" 0.", " .")
+            .replaceAll(" -", "-")
+            .replaceAll("-0.", "-.")
+            .replace(/\s+([mlcsqtahvz])/gi, "$1")
+            .replaceAll("Z", "z");
     }
 
     return d;

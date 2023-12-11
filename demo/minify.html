@@ -5,82 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minify svg pathdata</title>
-
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            font-family: sans-serif;
-        }
-
-        textarea {
-            width: 100%;
-            min-height: 20em;
-            max-height: 100%;
-            border-radius: 0.5em;
-            border-color: transparent;
-            white-space: pre-wrap;
-        }
-
-        input[type="number"] {
-            width: 4em;
-            transform: translateY(-0.1em);
-            border-radius: 0.333em;
-        }
-
-        input[type="number"]::-webkit-inner-spin-button {
-            opacity: 1;
-        }
-
-        svg {
-            display: block;
-            height: 100%;
-            width: auto;
-            border: 1px dotted #ccc;
-            margin: 0 auto;
-        }
-
-        .grd {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1em;
-        }
-
-        @media (min-width:1000px) {
-            .grd {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-        }
-
-        textarea {
-            flex: 1;
-            background-color: #777;
-            color: #fff
-        }
-
-
-        fieldset {
-            border: 1px solid #ccc;
-            display: flex;
-            flex-direction: column
-        }
-
-        legend {
-            font-weight: 700;
-        }
     </style>
-
-
-
 </head>
 
 <body>
-    <h1>SVG optimizer</h1>
-    <p>Paste a svg oth a path d string</p>
-
     <div class="grd">
 
         <fieldset>
-            <legend>Input</legend>
+
+            <header>
+                <h1>SVG optimizer</h1>
+            </header>
+            <legend>Settings</legend>
+
+            <!-- 
+            -->
             <p>
                 <label>
                     <input class="inputs" name="inputRelativeAbsolute" type="radio" value="absolute"> All Absolute
@@ -92,7 +33,6 @@
             </p>
 
             <p>
-
                 <label>
                     <input class="inputs" name="inputToShorthands" type="radio" value="shorthands" checked> Apply
                     shorthands
@@ -105,7 +45,8 @@
 
             <p>
                 <label><input class="inputs" id="inputPrecision" type="number" value="2" min="-1"> Precision</label>
-                <label><input class="inputs" id="inputScale" type="number" value="1" min="0.01" step="0.1"> Scale</label>
+                <label><input class="inputs" id="inputScale" type="number" value="1" min="0.01" step="0.1">
+                    Scale</label>
             </p>
             <p>
                 <label><input class="inputs" id="inputMinify" type="checkbox" checked> Minify</label>
@@ -113,10 +54,14 @@
                 <label><input class="inputs" id="inputCrop" type="checkbox"> Crop and center</label>
             </p>
 
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Input</legend>
+            <p>Paste a svg or a path d string</p>
             <textarea class="inputs" id="svgInput">
-
-
-                M328.4 393.5C318.7 402.6 303.5 402.1 294.5 392.4C287.1 384.5 274.4 376 256 376C237.6 376 224.9 384.5 217.5 392.4C208.5 402.1 193.3 402.6 183.6 393.5C173.9 384.5 173.4 369.3 182.5 359.6C196.7 344.3 221.4 328 256 328C290.6 328 315.3 344.3 329.5 359.6C338.6 369.3 338.1 384.5 328.4 393.5zM144.4 240C144.4 231.2 147.9 223.2 153.7 217.4L122.9 207.2C114.6 204.4 110 195.3 112.8 186.9C115.6 178.6 124.7 174 133.1 176.8L229.1 208.8C237.4 211.6 241.1 220.7 239.2 229.1C236.4 237.4 227.3 241.1 218.9 239.2L208.1 235.6C208.3 237 208.4 238.5 208.4 240C208.4 257.7 194 272 176.4 272C158.7 272 144.4 257.7 144.4 240V240zM368.4 240C368.4 257.7 354 272 336.4 272C318.7 272 304.4 257.7 304.4 240C304.4 238.4 304.5 236.8 304.7 235.3L293.1 239.2C284.7 241.1 275.6 237.4 272.8 229.1C270 220.7 274.6 211.6 282.9 208.8L378.9 176.8C387.3 174 396.4 178.6 399.2 186.9C401.1 195.3 397.4 204.4 389.1 207.2L358.9 217.2C364.7 223 368.4 231.1 368.4 240H368.4zM0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464z
+M328.4 393.5C318.7 402.6 303.5 402.1 294.5 392.4C287.1 384.5 274.4 376 256 376C237.6 376 224.9 384.5 217.5 392.4C208.5 402.1 193.3 402.6 183.6 393.5C173.9 384.5 173.4 369.3 182.5 359.6C196.7 344.3 221.4 328 256 328C290.6 328 315.3 344.3 329.5 359.6C338.6 369.3 338.1 384.5 328.4 393.5zM144.4 240C144.4 231.2 147.9 223.2 153.7 217.4L122.9 207.2C114.6 204.4 110 195.3 112.8 186.9C115.6 178.6 124.7 174 133.1 176.8L229.1 208.8C237.4 211.6 241.1 220.7 239.2 229.1C236.4 237.4 227.3 241.1 218.9 239.2L208.1 235.6C208.3 237 208.4 238.5 208.4 240C208.4 257.7 194 272 176.4 272C158.7 272 144.4 257.7 144.4 240V240zM368.4 240C368.4 257.7 354 272 336.4 272C318.7 272 304.4 257.7 304.4 240C304.4 238.4 304.5 236.8 304.7 235.3L293.1 239.2C284.7 241.1 275.6 237.4 272.8 229.1C270 220.7 274.6 211.6 282.9 208.8L378.9 176.8C387.3 174 396.4 178.6 399.2 186.9C401.1 195.3 397.4 204.4 389.1 207.2L358.9 217.2C364.7 223 368.4 231.1 368.4 240H368.4zM0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256zM256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464z
 
 
     </textarea>
@@ -147,14 +92,18 @@
 
         <fieldset>
             <legend>Output</legend>
-            <p><a class="btn-default btn-ddownload" id="btnDownload" download="scaled.svg" href="">Download svg (<span
-                        id="spanFilesize"></span>)</a></p>
+            <p>
+                <span id="spanFilesize"></span>
+            </p>
             <textarea id="output"></textarea>
+            <p>
+                <a class="btn-default btn-ddownload brd-rad" id="btnDownload" download="scaled.svg" href="">Download</a>
+            </p>
         </fieldset>
 
         <fieldset>
             <legend>Preview</legend>
-            <div id="preview"></div>
+            <div id="preview" class="bck-wht"></div>
         </fieldset>
 
     </div>
@@ -170,21 +119,21 @@
 
         window.addEventListener('DOMContentLoaded', (e) => {
 
-
             let inputs = document.querySelectorAll(".inputs");
             inputs.forEach((inp) => {
                 inp.addEventListener("input", (e) => {
 
-
+                    let svg;
+                    // conversion variables
                     let toAbsolute = document.querySelector('input[name="inputRelativeAbsolute"]:checked').value
                     let toShorthands = document.querySelector('input[name="inputToShorthands"]:checked').value
-                    let decimals = +inputPrecision.value
+                    let decimals = +inputPrecision.value;
                     let cropAndCenter = inputCrop.checked;
-                    let scale = +inputScale.value
+                    let scale = +inputScale.value;
                     let minify = inputMinify.checked;
 
+                    // get svg markup – either single path or svg
                     let markup = svgInput.value;
-                    let svg;
                     let singlePath = false;
 
                     // if is svg or just element or d
@@ -225,7 +174,7 @@
                         let pathData = path.getPathData2()
 
                         //scale
-                        if(scale!==1){
+                        if (scale !== 1) {
                             pathData = scalePathData(pathData, scale, scale)
                         }
 
@@ -233,8 +182,8 @@
                         if (singlePath && cropAndCenter) {
                             let { x, y, width, height } = svg.viewBox.baseVal
                             let bb = svg.getBBox();
-                            width = +width.toFixed(decimals)*scale
-                            height = +height.toFixed(decimals)*scale
+                            width = +width.toFixed(decimals) * scale
+                            height = +height.toFixed(decimals) * scale
 
                             console.log(width, height, scale);
 
@@ -243,10 +192,10 @@
 
                             //convert to Relative to shift starting point
                             pathData = pathDataToRelative(pathData, decimals);
-                            let xN = pathData[0].values[0] - bb.x*scale;
-                            let yN = pathData[0].values[1] - bb.y*scale;
-                            let offsetX = (width - bb.width*scale) / 2;
-                            let offsetY = (height - bb.height*scale) / 2;
+                            let xN = pathData[0].values[0] - bb.x * scale;
+                            let yN = pathData[0].values[1] - bb.y * scale;
+                            let offsetX = (width - bb.width * scale) / 2;
+                            let offsetY = (height - bb.height * scale) / 2;
                             pathData[0].values = [xN + offsetX, yN + offsetY]
                         }
 
@@ -290,12 +239,12 @@
 
 
                     // original size
-                    let fileSizeOriginal = +(  new Blob([svgInput.value]).size/1024   ).toFixed(3)
+                    let fileSizeOriginal = +(new Blob([svgInput.value]).size / 1024).toFixed(3)
 
                     let blob = new Blob([markupNew]);
                     btnDownload.href = URL.createObjectURL(blob);
                     let fileSizeNew = +(blob.size / 1024).toFixed(3);
-                    spanFilesize.textContent = fileSizeNew + " KB" + ' – '  +' saved: '+ (fileSizeOriginal-fileSizeNew).toFixed(3) +'/'+ fileSizeOriginal+' KB';
+                    spanFilesize.textContent = fileSizeNew + " KB" + ' – ' + ' saved: ' + (fileSizeOriginal - fileSizeNew).toFixed(3) + '/' + fileSizeOriginal;
 
                 })
             })
