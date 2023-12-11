@@ -75,7 +75,9 @@ You can define more finegrained conversions by these parameters
 | normalize  | Boolean; false | shorthand for: toAbsolute, arcToCubic, quadraticToCubic, toLonghands |
 
 #### Example1: simple conversion 
-Quite often you only need to convert commands to all absolute values as well as shorthands to longhand commands to get **calculatable values**. By specifying only required conversions you retain more of the original path information than using the "brute-force" normalize option.  
+Quite often you only need to convert commands to all absolute values as well as shorthands to longhand commands to get **calculatable values**. By specifying only required conversions you retain more of the original path information than using the "brute-force" normalize option.   
+See examples [convert.html](https://herrstrietzel.github.io/getPathData2/demo/parse.html)  
+
 
 For instance the suggested `normalize:true` option is quite "aggressive" as it also converts quadratics to cubics. Quadratic béziers usually often more efficient/faster calculations (e.g. calculating points at `t`).  
 
@@ -91,8 +93,8 @@ let pathData = path.getPathData2(options);
 ```
 
 #### Example2: individual conversion helpers
-When parsing from strings you can combine all conversion helpers individually.  
-(See examples/convert.html)
+When parsing from strings you can combine all conversion helpers individually.   
+See examples [convert.html](https://herrstrietzel.github.io/getPathData2/demo/convert.html)  
 
 ``` 
 let d = ` m 50 0 .00001.0001.001 10e-10 Q 36.4 0 24.8 6.8 t -18 18         
@@ -111,8 +113,25 @@ pathDataD = pathDataToLonghands(pathDataD)
 
 // to shorthands
 pathDataD = pathDataToShorthands(pathDataD)
+```
+
+
+### Example 3: parse to optimized pathdata
+
+`parseDtoPathDataOpt(d, options)` retrieves path data from a `d` string with optional conversersions applied using the same parameters as `getPathData2()`. 
+A wrapper combining `parseDToPathData()` and the `convertPathData(pathData, options)` helper.
 
 ```
+let options = {
+    toRelative: true,
+    toShorthands: true,
+    decimals: 1
+}
+
+// get optimized d
+let pathDataOpt = parseDtoPathDataOpt(d, options);
+```
+
 
 ## Set/apply pathData
 
