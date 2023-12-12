@@ -19,6 +19,15 @@ SVGGeometryElement.prototype.getPathData2 = function (options = {}) {
     let pathData = [];
     let type = this.nodeName;
     let d, x, y, width, height, r, rx, ry, cx, cy;
+    let svg, vB, svgW, svgH, css;
+
+    /**
+     * bugfix fro chromium
+     * ensures we can get the absolute baseVal.values
+     */
+    if (type !== 'path') {
+        css = window.getComputedStyle(this).fill
+    }
 
     switch (type) {
         case 'path':
@@ -31,8 +40,8 @@ SVGGeometryElement.prototype.getPathData2 = function (options = {}) {
             y = this.y.baseVal.value;
             width = this.width.baseVal.value;
             height = this.height.baseVal.value;
-            rx = this.hasAttribute("rx") ? this.rx.baseVal.value : 0;
-            ry = this.hasAttribute("ry") ? this.ry.baseVal.value : rx;
+            rx = this.rx.baseVal.value;
+            ry = this.ry.baseVal.value;
 
             if (!rx && !ry) {
                 pathData = [
@@ -128,6 +137,10 @@ SVGGeometryElement.prototype.getPathData2 = function (options = {}) {
         pathData = convertPathData(pathData, options)
     }
 
+    if(svg){
+        //svg.remove()
+    }
+
     return pathData;
 };
 
@@ -212,7 +225,7 @@ SVGPathElement.prototype.setPathData2 = function (pathData, options = {}) {
  * retrieve patData from primitives:
  * <circle>, <ellipse>, <rect>, <polygon>, <polyline>, <line>, 
  */
-SVGGeometryElement.prototype.convertShapeToPath = function (options) {
+SVGGeometryElement.prototype.convertShapeToPath = function (options = {}) {
     let pathData = this.getPathData2(options);
 
     // create path element
