@@ -19,6 +19,9 @@ This repository aims at providing helpers to:
 * convert commands to shorthands if applicable
 * convert primitives like `<circle>`, `<rect>`, `<polyline>` to `<path>` elements
 
+See [Demo "Minify pathdata"](https://herrstrietzel.github.io/getPathData2/demo/minify.html)  
+
+
 
 ## Usage
 Load getPathData2 locally or via cdn
@@ -116,7 +119,7 @@ pathDataD = pathDataToShorthands(pathDataD)
 ```
 
 
-### Example 3: parse to optimized pathdata
+#### Example 3: parse to optimized pathdata
 
 `parseDtoPathDataOpt(d, options)` retrieves path data from a `d` string with optional conversersions applied using the same parameters as `getPathData2()`. 
 A wrapper combining `parseDToPathData()` and the `convertPathData(pathData, options)` helper.
@@ -131,6 +134,9 @@ let options = {
 // get optimized d
 let pathDataOpt = parseDtoPathDataOpt(d, options);
 ```
+
+#### Example 4: minify pathdata
+[Minify pathdata](https://herrstrietzel.github.io/getPathData2/demo/minify.html)
 
 
 ## Set/apply pathData
