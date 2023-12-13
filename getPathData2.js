@@ -1,5 +1,5 @@
 /** 
-* getPathData2 v 0.9.7
+* getPathData2 v 0.9.8
 * Convert svg paths from 
 * - d attribute strings
 * - path or geometry elements (e.g. circle, rect, ellipse etc.) 
