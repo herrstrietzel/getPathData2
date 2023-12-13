@@ -305,6 +305,35 @@ function parseDtoPathData(d) {
     let comLengths = { m: 2, a: 7, c: 6, h: 1, l: 2, q: 4, s: 4, t: 2, v: 1, z: 0 };
     let errors = [];
 
+    // normalize convatenated larceArc and sweep flags
+    const unravelArcValues = (values)=>{
+        let chunksize=7, n=0, arcComs=[]
+        for (let i = 0; i < values.length; i++) {
+            let com = values[i]
+        
+            // reset counter
+            if (n >= chunksize) {
+                n = 0
+            }
+            // if 3. or 4. parameter longer than 1
+            if ((n === 3 || n === 4) && com.length > 1) {
+        
+                let largeArc = n === 3 ? com.substring(0, 1) : ''
+                let sweep = n === 3 ? com.substring(1, 2) : com.substring(0, 1)
+                let finalX = n === 3 ? com.substring(2) : com.substring(1)
+                let comN = [largeArc, sweep, finalX].filter(Boolean)
+                arcComs.push(comN)
+                n+=comN.length
+        
+            } else {
+                // regular
+                arcComs.push(com)
+                n++
+            }
+        }
+        return arcComs.flat().filter(Boolean);
+    }
+
     for (let i = 0; i < commands.length; i++) {
         let com = commands[i].split(" ");
         let type = com.shift();
@@ -315,27 +344,12 @@ function parseDtoPathData(d) {
          * large arc and sweep flags
          * are boolean and can be concatenated like
          * 11 or 01
+         * or be concatenated with the final on path points like
+         * 1110 10 => 1 1 10 10
          */
         if (typeRel === "a") {
-            if (com.length < comLengths[typeRel]) {
-                let flags = com[3].substring(0, 2).split('')
-                let largeArc = +flags[0];
-                let sweep = +flags[1];
-                let onPathX = +com[4]
-                if (com[3].length > 2) {
-                    onPathX = +com[3].substring(2)
-                }
-
-                com = [
-                    com[0],
-                    com[1],
-                    com[2],
-                    largeArc,
-                    sweep,
-                    onPathX,
-                    com[com.length - 1]
-                ];
-            }
+            com = unravelArcValues(com)
+            console.log(com);
         }
 
         // convert to numbers
