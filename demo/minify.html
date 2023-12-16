@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv='cache-control' content='no-cache'> 
-    <meta http-equiv='expires' content='0'> 
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <title>Minify svg pathdata</title>
     <link rel="stylesheet" href="style.css">
@@ -26,7 +26,7 @@
             </header>
             <!-- samples -->
             <p>
-                <select id="inputExample" class="inputs">
+                <select id="inputExample" class="">
                 </select>
             </p>
             <p>
@@ -66,7 +66,7 @@
                     Scale</label>
             </p>
             <p>
-                <label><input class="inputs" id="inputMinify" type="checkbox" checked> Minify</label>
+                <label><input class="inputs" id="inputMinify" type="checkbox"> Minify</label>
                 <label><input class="inputs" id="inputPrettify" type="checkbox" checked> Prettify</label>
                 <label><input class="inputs" id="inputCrop" type="checkbox"> Crop and center</label>
                 <label><input class="inputs" id="inputMarkers" type="checkbox"> Show markers</label>
@@ -74,7 +74,9 @@
 
             <footer>
                 <p class="p-link"><a href="https://herrstrietzel.github.io/getPathData2/">
-                    <svg class="icn-svg" viewBox="0 0 96 100"><use href="icons.svg#icn-github-solid" /></svg>     Back to main page</a>
+                        <svg class="icn-svg" viewBox="0 0 96 100">
+                            <use href="icons.svg#icn-github-solid" />
+                        </svg> Back to main page</a>
                 </p>
             </footer>
 
@@ -97,7 +99,9 @@
             <textarea id="output"></textarea>
             <p>
                 <a class="btn-default btn-ddownload brd-rad" id="btnDownload" download="scaled.svg" href="">
-                    <svg class="icn-svg icn-stroke" viewBox="0 0 100 100" ><use href="icons.svg#icn-download" /></svg>  
+                    <svg class="icn-svg icn-stroke" viewBox="0 0 100 100">
+                        <use href="icons.svg#icn-download" />
+                    </svg>
                     Download</a>
             </p>
         </fieldset>
@@ -131,6 +135,7 @@
 
         window.addEventListener('DOMContentLoaded', (e) => {
 
+            
             // load examples
             for (key in samples) {
                 let option = document.createElement('option')
@@ -138,16 +143,25 @@
                 option.innerHTML = key
                 inputExample.append(option)
             }
-            let first = inputExample.options[2];
+            let first = inputExample.options[1];
             first.selected = true
             svgInput.value = samples[first.value]
+            
+
+            inputExample.addEventListener("input",  (e) => {
+                // get svg markup – either single path or svg
+                let example = samples[inputExample.value]
+                svgInput.value = example
+                svgInput.dispatchEvent(new Event('input'))
+            })
+
 
             let inputs = document.querySelectorAll(".inputs");
 
             inputs.forEach((inp) => {
 
                 //disable auto complete
-                if(inp.nodeName.toLowerCase()==='textarea'){
+                if (inp.nodeName.toLowerCase() === 'textarea') {
                     inp.autocomplete = 'off'
                     inp.autocorrect = 'off'
                     inp.spellcheck = false
@@ -180,9 +194,6 @@
                     let scale = +inputScale.value;
                     let minify = inputMinify.checked;
 
-                    // get svg markup – either single path or svg
-                    let example = samples[inputExample.value]
-                    svgInput.value = example
 
                     let markup = svgInput.value;
                     let singlePath = false;
