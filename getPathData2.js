@@ -349,7 +349,6 @@ function parseDtoPathData(d) {
          */
         if (typeRel === "a") {
             com = unravelArcValues(com)
-            console.log(com);
         }
 
         // convert to numbers
