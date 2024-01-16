@@ -78,11 +78,12 @@ You can define more finegrained conversions by these parameters
 | normalize  | Boolean; false | shorthand for: toAbsolute, arcToCubic, quadraticToCubic, toLonghands |
 
 #### Example1: simple conversion 
-Quite often you only need to convert commands to all absolute values as well as shorthands to longhand commands to get **calculatable values**. By specifying only required conversions you retain more of the original path information than using the "brute-force" normalize option.   
+Often you only need to convert commands to all absolute values, and shortcuts to long commands, to get **calculable values**. By specifying only the conversions you need, you preserve more of the original path information than by using the brute-force normalisation option.   
+
 See examples [convert.html](https://herrstrietzel.github.io/getPathData2/demo/parse.html)  
 
 
-For instance the suggested `normalize:true` option is quite "aggressive" as it also converts quadratics to cubics. Quadratic béziers usually often more efficient/faster calculations (e.g. calculating points at `t`).  
+For instance the suggested `normalize:true` option is quite "aggressive" as it also converts quadratics to cubics. Quadratic béziers usually provide more efficient/faster calculations (e.g. calculating points at `t`).  
 
 Besides, skipping the rather complex arctocubic conversion can also improve performance. 
 (See examples/convert.html)
